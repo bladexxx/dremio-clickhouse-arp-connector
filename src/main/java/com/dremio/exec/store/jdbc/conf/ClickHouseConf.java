@@ -17,16 +17,19 @@ package com.dremio.exec.store.jdbc.conf;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.dremio.options.OptionManager;
+import com.dremio.security.CredentialsService;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.dremio.exec.catalog.conf.DisplayMetadata;
 import com.dremio.exec.catalog.conf.NotMetadataImpacting;
 import com.dremio.exec.catalog.conf.SourceType;
-import com.dremio.exec.server.SabotContext;
+//import com.dremio.exec.server.SabotContext;
 import com.dremio.exec.store.jdbc.CloseableDataSource;
 import com.dremio.exec.store.jdbc.DataSources;
-import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
-import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
+import com.dremio.exec.store.jdbc.JdbcPluginConfig;
+//import com.dremio.exec.store.jdbc.JdbcStoragePlugin;
+//import com.dremio.exec.store.jdbc.JdbcStoragePlugin.Config;
 import com.dremio.exec.store.jdbc.dialect.arp.ArpDialect;
 import com.google.common.annotations.VisibleForTesting;
 import com.dremio.exec.catalog.conf.Secret;
@@ -99,6 +102,7 @@ public class ClickHouseConf extends AbstractArpConf<ClickHouseConf> {
 
   @Override
   @VisibleForTesting
+  /*
   public Config toPluginConfig(SabotContext context) {
     return JdbcStoragePlugin.Config.newBuilder()
         .withDialect(getDialect())
@@ -107,6 +111,20 @@ public class ClickHouseConf extends AbstractArpConf<ClickHouseConf> {
         .clearHiddenSchemas()
         // .addHiddenSchema("SYSTEM")
         .build();
+  }
+*/
+  public JdbcPluginConfig buildPluginConfig(
+          JdbcPluginConfig.Builder configBuilder,
+          CredentialsService credentialsService,
+          OptionManager optionManager
+  ) {
+    return configBuilder.withDialect(getDialect())
+            //.withFetchSize(fetchSize)
+            .withDatasourceFactory(this::newDataSource)
+            .clearHiddenSchemas()
+            //.addHiddenSchema("SYSTEM")
+            //.withAllowExternalQuery(enableExternalQuery)
+            .build();
   }
 
   private CloseableDataSource newDataSource() {
