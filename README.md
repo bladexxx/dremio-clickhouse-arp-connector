@@ -1,3 +1,6 @@
+# Change pom.xml and ClickHouseConf.java to support Dremio 13 !!!!
+# Use clickhouse-jdbc in my repo that is a workaround way to fix an error，details, please check [here] (https://github.com/bladexxx/clickhouse-jdbc) 
+
 # Dremio ClickHouse ARP Connector
 
 The ClickHouse connector allows Dremio to connect to and query data in ClickHouse Columnar Database.
